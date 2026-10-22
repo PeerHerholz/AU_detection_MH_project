@@ -123,7 +123,7 @@ removing a file in a later commit leaves it in the history.
 
 ## Running the checks
 
-The workflows in `.github/workflows/` run these three commands. Run them
+The workflows in `.github/workflows/` run these commands. Run them
 locally before committing:
 
 ```bash
@@ -283,10 +283,11 @@ apptainer exec au_detection_mh.sif pytest
 
 ### Licences of the bundled software
 
-An image bundles far more than this project, so publishing one
-redistributes everything inside it. All of it may be redistributed, and
-none of the licences below prohibit what the container workflow does,
-but the image is not covered by this project's BSD-3-Clause licence
+An image bundles far more than this project, so sharing one
+redistributes everything inside it. This repository publishes no image,
+so the question only arises for whoever builds and then shares one. All
+of it may be redistributed and none of the licences below prohibit that,
+but an image is not covered by this project's BSD-3-Clause licence
 alone.
 
 Of the 124 Python distributions the images install, 121 carry permissive
@@ -328,41 +329,23 @@ metadata of the exact dependency set the images install. The operating
 system layer was not measured the same way, because doing so means
 running the image.
 
-### Published images
+### No pre-built images
 
-The container workflow builds the image on every push and pull request,
-and publishes it to Docker Hub and the GitHub Container Registry on
-pushes to `main` and on `v*` tags. The lab's namespace is spelled
-differently on the two: `vccn-lab` on ghcr.io, `vccnlab` on Docker Hub.
-A tag push publishes the version number, so pull by that tag rather
-than by `latest`:
+This project ships `generate_images.sh` and the two definition files it
+writes, and nothing else: no image is published to any registry. Build
+one when you want it, as described above.
 
-```bash
-podman pull ghcr.io/vccn-lab/au_detection_mh:1.2.3
-podman pull vccnlab/au_detection_mh:1.2.3
-```
+The container workflow builds the image on every push and pull request
+and discards it. That catches a change which breaks the definition, and
+it also fails when the committed `Dockerfile` no longer matches what
+`generate_images.sh` produces, since a stale definition in the
+repository is what someone building by hand would use. No registry
+credentials are involved and the workflow has read-only permissions.
 
-The ghcr.io push authenticates with the `GITHUB_TOKEN` the workflow
-already has, so it needs no secret as long as the image namespace
-matches the repository owner. Docker Hub is opt-in: set the
-`DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` secrets on the repository and
-it is published to as well, and without them that registry is skipped
-rather than failing the job.
-
-All four workflows also carry a `workflow_dispatch` trigger, so they can
-be started by hand from the Actions tab on any branch. A manual run
-builds but does not publish: both publish gates test for a push, so what
-reaches a registry or Pages always corresponds to a commit on `main`.
-
-The `.sif` is not published by CI. Push one from a local build with:
-
-```bash
-REGISTRY_OWNER=vccn-lab IMAGE_TAG=1.2.3 \
-    bash generate_images.sh singularity local push
-```
-
-That stores it as an OCI artifact, so it is retrieved with
-`apptainer pull oras://...` rather than with `podman pull`.
+`generate_images.sh` can still push an image it has built, with its
+`push` argument and `REGISTRY_OWNER`. That is there for whoever wants to
+host one deliberately; the repository does not do it for you, and the
+licence section above is what to read first.
 
 ## License
 

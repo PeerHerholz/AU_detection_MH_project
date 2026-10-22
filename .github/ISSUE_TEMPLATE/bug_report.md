@@ -35,7 +35,8 @@ The full traceback or log, rather than the last line alone.
 
 **If you are running a container**
  - Engine and version: [e.g. podman 4.9.3, docker 27.1.1, apptainer 1.3.4]
- - Image and tag: [e.g. ghcr.io/vccn-lab/au_detection_mh:1.2.3, or a local build]
+ - How the image was built: [generate_images.sh, or your own definition]
+ - Definition the build used: [the committed Dockerfile or Singularity.def, or a modified one]
  - Does the same command work outside the container? [yes / no / not tried]
 
 **Additional context**

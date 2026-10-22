@@ -1,0 +1,70 @@
+name: Build Container
+
+# The events/triggers when it should be run
+# The image is built on every push and pull request so that a change
+# which breaks the container definition is caught here, rather than by
+# whoever next builds it by hand. Nothing is published: this project
+# ships generate_images.sh and the two definition files, and leaves
+# building to whoever wants an image.
+on:
+  # Lets the workflow be started by hand from the Actions tab, on any
+  # branch, without needing a push or a pull request.
+  workflow_dispatch:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+
+# Read-only: no registry is written to, so no packages permission and no
+# credentials are needed. A pull request from a fork gets the same
+# treatment as a push, because there is nothing to protect.
+permissions:
+  contents: read
+
+jobs:
+  build-image:
+    name: Build the OCI image from the generated definition
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # uv provides uvx, which generate_images.sh uses to run neurodocker
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      # The Dockerfile is regenerated here rather than read from the
+      # repository, so that a change to generate_images.sh or
+      # pyproject.toml which the committed definition no longer matches
+      # is caught.
+      - name: Generate the Dockerfile
+        run: |
+          bash generate_images.sh docker
+
+      # Fail if generating the definition produced something other than
+      # what is committed, since a stale Dockerfile in the repository is
+      # what someone building by hand would use.
+      - name: Check the committed Dockerfile is current
+        run: |
+          git diff --exit-code -- Dockerfile
+
+      # Buildx is used here, where a daemon is available and layer
+      # caching comes for free. The generated definition is
+      # engine-neutral, so the same file builds locally with podman.
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build the image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./
+          # Nothing leaves the runner. The build either succeeds or it
+          # does not, which is the whole point of this workflow.
+          push: false
+          load: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
