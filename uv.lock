@@ -155,6 +155,7 @@ dev = [
 docs = [
     { name = "jupyter-book" },
     { name = "pdoc" },
+    { name = "pyyaml" },
 ]
 notebooks = [
     { name = "ipykernel" },
@@ -164,6 +165,11 @@ notebooks = [
     { name = "scikit-posthocs" },
     { name = "seaborn" },
     { name = "statsmodels" },
+]
+tests = [
+    { name = "coverage" },
+    { name = "pytest" },
+    { name = "pytest-cov" },
 ]
 
 [package.dev-dependencies]
@@ -176,12 +182,16 @@ docs = [
 notebooks = [
     { name = "au-detection-mh", extra = ["notebooks"] },
 ]
+tests = [
+    { name = "au-detection-mh", extra = ["tests"] },
+]
 
 [package.metadata]
 requires-dist = [
+    { name = "au-detection-mh", extras = ["tests"], marker = "extra == 'dev'" },
     { name = "black", marker = "extra == 'dev'", specifier = ">=23.0.0" },
     { name = "codespell", marker = "extra == 'dev'", specifier = ">=2.2.0" },
-    { name = "coverage", marker = "extra == 'dev'", specifier = ">=7.0" },
+    { name = "coverage", marker = "extra == 'tests'", specifier = ">=7.0" },
     { name = "flake8", marker = "extra == 'dev'", specifier = ">=6.0.0" },
     { name = "ipykernel", marker = "extra == 'notebooks'", specifier = ">=6.0.0" },
     { name = "jupyter-book", marker = "extra == 'docs'", specifier = ">=2.1.7" },
@@ -191,20 +201,22 @@ requires-dist = [
     { name = "pandas", specifier = ">=2.2" },
     { name = "pdoc", marker = "extra == 'docs'", specifier = ">=16.0.0" },
     { name = "pingouin", marker = "extra == 'notebooks'", specifier = ">=0.7" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=6.0" },
-    { name = "pytest-cov", marker = "extra == 'dev'" },
+    { name = "pytest", marker = "extra == 'tests'", specifier = ">=6.0" },
+    { name = "pytest-cov", marker = "extra == 'tests'" },
+    { name = "pyyaml", marker = "extra == 'docs'", specifier = ">=6.0" },
     { name = "scikit-learn", specifier = ">=1.4" },
     { name = "scikit-posthocs", marker = "extra == 'notebooks'", specifier = ">=0.9" },
     { name = "scipy", specifier = ">=1.12" },
     { name = "seaborn", marker = "extra == 'notebooks'", specifier = ">=0.13" },
     { name = "statsmodels", marker = "extra == 'notebooks'", specifier = ">=0.14" },
 ]
-provides-extras = ["dev", "notebooks", "docs"]
+provides-extras = ["tests", "dev", "notebooks", "docs"]
 
 [package.metadata.requires-dev]
 dev = [{ name = "au-detection-mh", extras = ["dev"] }]
 docs = [{ name = "au-detection-mh", extras = ["docs"] }]
 notebooks = [{ name = "au-detection-mh", extras = ["notebooks"] }]
+tests = [{ name = "au-detection-mh", extras = ["tests"] }]
 
 [[package]]
 name = "babel"

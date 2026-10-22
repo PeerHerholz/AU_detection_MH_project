@@ -46,12 +46,19 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# Formatting, spelling and test tooling, matching the checks the
-# workflows in .github/workflows run.
-dev = [
+# The test runner, kept separate from the rest of the development
+# tooling because the container images install it: the Apptainer image
+# is documented as running the suite with "apptainer exec ... pytest".
+tests = [
     "pytest>=6.0",
     "pytest-cov",
     "coverage>=7.0",
+]
+# Formatting, spelling and test tooling, matching the checks the
+# workflows in .github/workflows run.  Only this set is installed
+# locally by default; the images leave it out.
+dev = [
+    "au_detection_mh[tests]",
     "black>=23.0.0",
     "flake8>=6.0.0",
     "codespell>=2.2.0",
@@ -77,6 +84,7 @@ notebooks = [
 docs = [
     "jupyter-book>=2.1.7",
     "pdoc>=16.0.0",
+    "pyyaml>=6.0",
 ]
 
 # The same sets are declared as dependency groups, which "uv run" and
@@ -85,6 +93,7 @@ docs = [
 # are written once.
 [dependency-groups]
 dev = ["au_detection_mh[dev]"]
+tests = ["au_detection_mh[tests]"]
 notebooks = ["au_detection_mh[notebooks]"]
 docs = ["au_detection_mh[docs]"]
 

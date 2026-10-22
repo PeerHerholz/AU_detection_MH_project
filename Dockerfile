@@ -45,7 +45,7 @@ COPY ["pyproject.toml", \
       "/home/au_detection_mh/pyproject.toml"]
 COPY ["uv.lock", \
       "/home/au_detection_mh/uv.lock"]
-RUN cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11                      --extra notebooks --no-install-project                 && rm -rf /root/.cache/uv
+RUN cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11                      --extra notebooks --extra tests                      --no-default-groups --no-install-project                 && rm -rf /root/.cache/uv
 COPY ["au_detection_mh", \
       "/home/au_detection_mh/au_detection_mh"]
 COPY ["analyses", \
@@ -60,7 +60,7 @@ COPY ["README.md", \
       "/home/au_detection_mh/README.md"]
 COPY ["LICENSE", \
       "/home/au_detection_mh/LICENSE"]
-RUN cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11 --extra notebooks                 && rm -rf /root/.cache/uv
+RUN cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11                      --extra notebooks --extra tests --no-default-groups                 && rm -rf /root/.cache/uv
 ENV IS_DOCKER="1"
 ENV MPLCONFIGDIR="/tmp/matplotlib"
 RUN echo 'source /opt/au_detection_mh/bin/activate'                 >> /home/au_detection_mh/.bashrc
@@ -177,7 +177,7 @@ RUN printf '{ \
     { \
       "name": "run", \
       "kwds": { \
-        "command": "cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11                      --extra notebooks --no-install-project                 && rm -rf /root/.cache/uv" \
+        "command": "cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11                      --extra notebooks --extra tests                      --no-default-groups --no-install-project                 && rm -rf /root/.cache/uv" \
       } \
     }, \
     { \
@@ -253,7 +253,7 @@ RUN printf '{ \
     { \
       "name": "run", \
       "kwds": { \
-        "command": "cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11 --extra notebooks                 && rm -rf /root/.cache/uv" \
+        "command": "cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11                      --extra notebooks --extra tests --no-default-groups                 && rm -rf /root/.cache/uv" \
       } \
     }, \
     { \

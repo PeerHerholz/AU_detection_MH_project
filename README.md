@@ -281,6 +281,53 @@ apptainer run au_detection_mh.sif jupyter lab --no-browser --ip=0.0.0.0
 apptainer exec au_detection_mh.sif pytest
 ```
 
+### Licences of the bundled software
+
+An image bundles far more than this project, so publishing one
+redistributes everything inside it. All of it may be redistributed, and
+none of the licences below prohibit what the container workflow does,
+but the image is not covered by this project's BSD-3-Clause licence
+alone.
+
+Of the 124 Python distributions the images install, 121 carry permissive
+licences (BSD, MIT, Apache-2.0, ISC, PSF). Three do not:
+
+| Distribution | Licence | Why it is there |
+| --- | --- | --- |
+| `pingouin` | GPL-3.0 | The notebooks' hypothesis tests |
+| `certifi` | MPL-2.0 | Transitive, via the HTTP stack |
+| `fqdn` | MPL-2.0 | Transitive, via the Jupyter stack |
+
+The operating system layer adds more. The base image is
+`python:3.11-slim-bookworm`, so the image carries Debian, and
+`generate_images.sh` installs `git`, `curl`, `build-essential`, `gcc`,
+`g++` and `nano` on top. Those are GPL-2.0 and GPL-3.0, the compilers
+with the GCC Runtime Library Exception. An image built on a Linux
+distribution therefore contains copyleft software whatever the Python
+layer looks like.
+
+What this means in practice:
+
+- **Redistribution is permitted.** The GPL and the MPL both allow
+  conveying binaries, and an image that installs separate programs
+  side by side is an aggregate rather than a derivative work of any of
+  them, so this project's own licence is unaffected.
+- **Conveying carries obligations.** The GPL asks that the licence text
+  travel with the binary and that corresponding source be available.
+  Each distribution's licence file is installed with it under
+  `/opt/au_detection_mh`, and the sources are the public releases named
+  in `uv.lock`, which is committed.
+- **The development tooling is kept out.** The images install the
+  `notebooks` and `tests` extras with `--no-default-groups`, so
+  `black`, `flake8` and `codespell` are absent. `codespell` is
+  GPL-2.0-only, so this also removes a component with no runtime
+  purpose.
+
+The Python figures above were read from the installed distribution
+metadata of the exact dependency set the images install. The operating
+system layer was not measured the same way, because doing so means
+running the image.
+
 ### Published images
 
 The container workflow builds the image on every push and pull request,

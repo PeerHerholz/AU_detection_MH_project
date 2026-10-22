@@ -72,12 +72,61 @@ require_node() {
   fi
 }
 
+# Fail before building when the table of contents names a file that is
+# not there, or an empty one
+#
+# MyST reports such an entry and carries on with that page dropped, and
+# "jupyter book build --strict" does not change that, so a rename that
+# misses myst.yml publishes an incomplete book while CI stays green.
+# That happened once: the walkthrough notebook was renamed and the book
+# went out with 13 pages instead of 14.
+check_toc() {
+  echo "  -> Checking the table of contents against the files on disk..."
+  uv run --extra docs python - <<'PYTHON'
+import json
+import pathlib
+import sys
+
+import yaml
+
+config = yaml.safe_load(pathlib.Path("myst.yml").read_text())
+
+
+def listed_files(entries):
+    """Yield every file named in a MyST table of contents."""
+    for entry in entries:
+        if "file" in entry:
+            yield entry["file"]
+        for child in entry.get("children", []):
+            yield from listed_files([child])
+
+
+problems = []
+for relative in listed_files(config["project"]["toc"]):
+    path = pathlib.Path(relative)
+    if not path.is_file():
+        problems.append(f"{relative}: not found")
+    elif path.stat().st_size == 0:
+        problems.append(f"{relative}: empty")
+    elif path.suffix == ".ipynb":
+        json.loads(path.read_text())
+
+if problems:
+    sys.stderr.write("Error: myst.yml does not match the files on disk:\n")
+    for problem in problems:
+        sys.stderr.write(f"  {problem}\n")
+    sys.exit(1)
+
+print("     table of contents is consistent")
+PYTHON
+}
+
 # Build the book itself
 build_book() {
   local execute_flag=("$@")
 
   echo "  -> Building the book into $BUILD_DIR..."
-  uv run --extra docs jupyter book build --html "${execute_flag[@]}"
+  uv run --extra docs jupyter book build --html --strict "${execute_flag[@]}"
   echo "  -> Book build completed"
 }
 
@@ -141,6 +190,7 @@ done
 
 require_uv
 require_node
+check_toc
 
 echo ""
 echo "=== BUILD PHASE ==="

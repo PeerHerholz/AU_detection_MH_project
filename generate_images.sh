@@ -142,6 +142,12 @@ generate_container() {
   # the declaration alone put the environment in /home/$PROJECT/.venv
   # during the .sif build, after which the chmod below had no /opt path
   # to act on.
+  # --no-default-groups keeps the dev group out of the images.  Only
+  # pytest is wanted in them, for the documented "apptainer exec ...
+  # pytest", and black, flake8 and codespell have no runtime purpose in
+  # a published artefact.  Leaving codespell out also removes the one
+  # GPL-2.0 component the images would otherwise carry; see the licence
+  # section of README.md.
   args+=(--env UV_PROJECT_ENVIRONMENT="/opt/$PROJECT")
   args+=(--env VIRTUAL_ENV="/opt/$PROJECT")
   args+=(--env PATH="/opt/$PROJECT/bin:\$PATH")
@@ -150,7 +156,8 @@ generate_container() {
   args+=(--run "cd /home/$PROJECT \
                 && UV_PROJECT_ENVIRONMENT=/opt/$PROJECT \
                    uv sync --frozen --python 3.11 \
-                     --extra notebooks --no-install-project \
+                     --extra notebooks --extra tests \
+                     --no-default-groups --no-install-project \
                 && rm -rf /root/.cache/uv")
 
   # --- Source copy, then the project itself ---
@@ -176,7 +183,8 @@ generate_container() {
   done
   args+=(--run "cd /home/$PROJECT \
                 && UV_PROJECT_ENVIRONMENT=/opt/$PROJECT \
-                   uv sync --frozen --python 3.11 --extra notebooks \
+                   uv sync --frozen --python 3.11 \
+                     --extra notebooks --extra tests --no-default-groups \
                 && rm -rf /root/.cache/uv")
 
   # --- Environment marker, read by code that behaves differently in a

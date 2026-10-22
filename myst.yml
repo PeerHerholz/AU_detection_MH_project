@@ -49,7 +49,7 @@ project:
         - file: analyses/02_binary_classification_performance.ipynb
         - file: analyses/03_temporal_alignment.ipynb
         - file: analyses/04_landmark_displacement.ipynb
-        - file: analyses/analyses_and_figures_no-posthocs_script.ipynb
+        - file: analyses/analyses_and_figures_script_all.ipynb
 
     - title: Code
       children:

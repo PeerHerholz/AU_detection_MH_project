@@ -62,9 +62,9 @@ rm -rf /var/lib/apt/lists/*
 curl -LsSf https://astral.sh/uv/install.sh | sh \
                 && cp /root/.local/bin/uv /root/.local/bin/uvx /usr/local/bin/
 
-cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11                      --extra notebooks --no-install-project                 && rm -rf /root/.cache/uv
+cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11                      --extra notebooks --extra tests                      --no-default-groups --no-install-project                 && rm -rf /root/.cache/uv
 
-cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11 --extra notebooks                 && rm -rf /root/.cache/uv
+cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11                      --extra notebooks --extra tests --no-default-groups                 && rm -rf /root/.cache/uv
 
 echo 'source /opt/au_detection_mh/bin/activate'                 >> /home/au_detection_mh/.bashrc
 
@@ -175,7 +175,7 @@ printf '{ \
     { \
       "name": "run", \
       "kwds": { \
-        "command": "cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11                      --extra notebooks --no-install-project                 && rm -rf /root/.cache/uv" \
+        "command": "cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11                      --extra notebooks --extra tests                      --no-default-groups --no-install-project                 && rm -rf /root/.cache/uv" \
       } \
     }, \
     { \
@@ -244,7 +244,7 @@ printf '{ \
     { \
       "name": "run", \
       "kwds": { \
-        "command": "cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11 --extra notebooks                 && rm -rf /root/.cache/uv" \
+        "command": "cd /home/au_detection_mh                 && UV_PROJECT_ENVIRONMENT=/opt/au_detection_mh                    uv sync --frozen --python 3.11                      --extra notebooks --extra tests --no-default-groups                 && rm -rf /root/.cache/uv" \
       } \
     }, \
     { \
