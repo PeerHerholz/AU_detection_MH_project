@@ -1,4 +1,4 @@
-# AU_detection_MH_project
+# Action unit detection on MetaHuman facial animations
 
 Code and analysis documentation accompanying an evaluation of automatic
 action unit (AU) detection tools on
