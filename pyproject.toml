@@ -65,9 +65,7 @@ dev = [
 ]
 # Jupyter, for the notebooks in analyses/ and for the kernel that the
 # container images register, together with the plotting and
-# hypothesis-testing packages the notebooks use.  The code in
-# au_detection_mh/ returns tables and does not import these, which is
-# why they sit here rather than in dependencies above.
+# hypothesis-testing packages the notebooks use.
 notebooks = [
     "jupyterlab>=4.0.0",
     "ipykernel>=6.0.0",

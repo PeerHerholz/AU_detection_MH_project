@@ -1,10 +1,9 @@
 # MATLAB analyses
 
 MATLAB sources that produced the data in
-[`../ds-au_detection_mh`](../ds-au_detection_mh). They are not part of
-the `au_detection_mh` package and are not run by the container images,
-which carry no MATLAB; they are kept here so the record of how the data
-was produced travels with the repository.
+[`../ds-au_detection_mh`](../ds-au_detection_mh). They run in MATLAB,
+outside the `au_detection_mh` package and outside the container images,
+which carry no MATLAB.
 
 | Script | Step |
 | --- | --- |

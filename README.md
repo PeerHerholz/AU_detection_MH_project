@@ -210,10 +210,9 @@ through `uvx`, so generating them needs no container runtime. Inside the
 images, `uv sync --frozen` installs the versions from `uv.lock`, which
 has to be committed before an image can be built.
 
-The images carry the Python analyses. They do not carry MATLAB or Unreal
-Engine, so the steps in `matlab/` and `unreal/` cannot be re-run inside
-them; those directories are copied in so that the record of how the data
-was produced travels with the image.
+The images carry the Python analyses. They carry no MATLAB and no
+Unreal Engine, so the steps in `matlab/` and `unreal/` cannot be re-run
+inside them. Both directories are copied in and can be read there.
 
 Generate both definitions:
 

@@ -21,6 +21,5 @@ with a `Parameters`, `Returns` and where relevant a `Raises` section, so
 the reference states what each function accepts, what it returns and
 which inputs it rejects.
 
-Plotting and hypothesis testing are not in the package: the modules
-return arrays, dictionaries and `pandas` objects, and the notebooks in
-`analyses/` do the presentation and the statistics.
+The modules return arrays, dictionaries and `pandas` objects. The
+notebooks in `analyses/` plot them and run the hypothesis tests.

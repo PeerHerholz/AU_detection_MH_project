@@ -10,10 +10,10 @@ and imported by the notebooks in [`../analyses`](../analyses).
 | `preprocessing.py` | Thresholding a prediction matrix against the rig ground truth, and the confusion counts that follow from it |
 | `analyses.py` | The reported measures: classification metrics per avatar and animation, zero-lag cross-correlation, pairwise landmark correlation, and the active-over-inactive displacement ratio |
 
-Each module returns arrays, dictionaries or `pandas` objects. Plotting
-and hypothesis testing stay in the notebooks, which is why `matplotlib`,
-`seaborn` and `pingouin` are in the `notebooks` extra rather than in
-`dependencies`.
+Each module returns arrays, dictionaries or `pandas` objects. The
+notebooks in [`../analyses`](../analyses) plot them and run the
+hypothesis tests, using `matplotlib`, `seaborn` and `pingouin` from the
+`notebooks` extra.
 
 The MATLAB and Unreal Engine sources that produced the data these
 modules read are in [`../matlab`](../matlab) and

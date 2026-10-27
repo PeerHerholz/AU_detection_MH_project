@@ -22,8 +22,7 @@ Landmark displacement
     landmarks an animation targets with the rest.
 
 The functions return arrays, dictionaries and ``pandas`` objects.
-Plotting and hypothesis testing are left to the notebooks in
-``analyses``.
+The notebooks in ``analyses`` plot them and run the hypothesis tests.
 """
 
 import warnings
