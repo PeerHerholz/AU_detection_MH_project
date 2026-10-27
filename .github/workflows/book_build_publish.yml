@@ -98,13 +98,20 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
 
-    # Published from main only. Pull requests build the book but do
-    # not publish it, so a broken table of contents or notebook is
-    # caught before it reaches the published site.
+    # Published from main, and from the VCCN-lab copy alone.  Pull
+    # requests build the book without publishing it, so a broken table
+    # of contents or notebook is caught before it reaches the site.
     #
-    # Publishing also needs Pages switched on for the repository, with
-    # the source set to GitHub Actions.
-    if: github.event_name == 'push'
+    # The owner is named because the deploy needs Pages switched on for
+    # the repository, with the source set to GitHub Actions, and that is
+    # configured on the VCCN-lab copy.  A fork that pushes to its own
+    # main builds the book, which is a useful check, and skips the
+    # deployment instead of failing it with a 404 from the Pages API.
+    # Testing github.event.repository.fork would not separate the two,
+    # since the VCCN-lab copy is itself a fork.
+    if: >-
+      github.event_name == 'push'
+      && github.repository_owner == 'VCCN-lab'
 
     environment:
       name: github-pages

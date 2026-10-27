@@ -192,10 +192,16 @@ run from `build_book.sh`.
 
 ### Published book
 
-The book workflow builds on every push and pull request, and publishes
-to GitHub Pages from `main`. It needs Pages switched on with the source
-set to GitHub Actions. The site then appears at
-`https://peerherholz.github.io/AU_detection_MH_project/`.
+The book workflow builds on every push and pull request. It publishes
+to GitHub Pages from `main` in the VCCN-lab copy, where Pages is
+switched on with the source set to GitHub Actions, and the site is at
+<https://vccn-lab.github.io/AU_detection_MH_project/>.
+
+A fork that pushes to its own `main` builds the book and skips the
+deployment, so the build still checks that the book compiles without
+needing Pages configured. To publish from a fork as well, switch Pages
+on there and add the owner to the `deploy` job's condition in
+`.github/workflows/book_build_publish.yml`.
 
 The first build in a fresh environment spends about ten minutes
 installing the site template's web libraries; later builds take about
